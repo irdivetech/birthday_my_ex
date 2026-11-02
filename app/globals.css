@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-crimson: #9E1023;
+  --color-deep-crimson: #720E1B;
+  --color-burgundy: #5A0F1A;
+  --color-dark-burgundy: #30080F;
+  --color-near-black: #100609;
+  --color-warm-cream: #F8E8DC;
+  --color-soft-rose: #E8A8B0;
+  --color-gold: #D7A85C;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: #100609;
+  color: #F8E8DC;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Custom romantic scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #100609;
+}
+::-webkit-scrollbar-thumb {
+  background: #5A0F1A;
+  border-radius: 4px;
+  border: 1px solid rgba(215, 168, 92, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9E1023;
+}
+
+/* Starfield sparkle */
+.star-twinkle {
+  animation: starTwinkle 3s ease-in-out infinite alternate;
+}
+
+@keyframes starTwinkle {
+  0% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 0.9; transform: scale(1.1); }
+  100% { opacity: 0.3; transform: scale(0.9); }
+}
+
+/* Paper texture pattern for warm cream section */
+.bg-parchment-pattern {
+  background-color: #F8E8DC;
+  background-image: 
+    radial-gradient(#E8A8B0 0.75px, transparent 0.75px),
+    radial-gradient(#D7A85C 0.5px, #F8E8DC 0.5px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+/* Wax seal stamp style */
+.wax-seal {
+  background: radial-gradient(circle at 30% 30%, #B82236, #720E1B 70%, #4D0711);
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.3),
+    inset 0 -3px 5px rgba(0, 0, 0, 0.5),
+    0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Glassmorphism styling */
+.glass-burgundy {
+  background: rgba(48, 8, 15, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(215, 168, 92, 0.18);
+}
+
+.glass-crimson {
+  background: rgba(114, 14, 27, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(232, 168, 176, 0.25);
+}
+
+.glass-card {
+  background: rgba(90, 15, 26, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(215, 168, 92, 0.15);
+}
+
+/* Atmospheric vignette */
+.vignette-radial {
+  background: radial-gradient(circle at center, transparent 40%, rgba(16, 6, 9, 0.85) 100%);
+}
+
+/* Gold foil text shine */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #F0CF8D 0%, #D7A85C 50%, #B38539 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-crimson-gradient {
+  background: linear-gradient(135deg, #E8A8B0 0%, #B82236 45%, #720E1B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Candle flame glow */
+.candle-glow {
+  box-shadow: 0 0 20px 8px rgba(245, 166, 35, 0.45), 0 0 45px 15px rgba(215, 168, 92, 0.25);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
