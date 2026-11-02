@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FallingPetals } from "@/components/birthday/FallingPetals";
 import { Navigation } from "@/components/birthday/Navigation";
 import { MusicToggle } from "@/components/birthday/MusicToggle";
-import { Hero } from "@/components/birthday/Hero";
+import { CountdownSection } from "@/components/birthday/CountdownSection";
 import { MainGreeting } from "@/components/birthday/MainGreeting";
 import { About } from "@/components/birthday/About";
 import { MemoryGallery } from "@/components/birthday/MemoryGallery";
@@ -52,8 +52,8 @@ export default function BirthdayPage() {
         )}
       </AnimatePresence>
 
-      {/* Section 01: Opening Intro Screen */}
-      <Hero onOpenGift={handleOpenGift} />
+      {/* Section 01: Romantic Birthday Countdown Screen */}
+      <CountdownSection onOpenGift={handleOpenGift} />
 
       {/* Experience Journey (Revealed/accessible on scroll) */}
       <div
