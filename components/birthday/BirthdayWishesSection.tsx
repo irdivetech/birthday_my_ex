@@ -1,10 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, Heart, ChevronRight } from "lucide-react";
-import confetti from "canvas-confetti";
-import { birthdayData } from "@/data/birthday";
+import { LoveMeterModal } from "@/components/birthday/LoveMeterModal";
 
 export interface BirthdayWishesSectionProps {
   onNext?: () => void;
@@ -15,19 +14,7 @@ export const BirthdayWishesSection: React.FC<BirthdayWishesSectionProps> = ({
   onNext,
   className = "",
 }) => {
-  const triggerSparkles = () => {
-    try {
-      const colors = ["#f472b6", "#ec4899", "#fb7185", "#fce7f3", "#d7a85c"];
-      confetti({
-        particleCount: 50,
-        spread: 60,
-        origin: { y: 0.65 },
-        colors,
-      });
-    } catch {
-      // Fallback
-    }
-  };
+  const [showLoveMeter, setShowLoveMeter] = useState(false);
 
   return (
     <section
@@ -118,19 +105,19 @@ export const BirthdayWishesSection: React.FC<BirthdayWishesSectionProps> = ({
             </p>
           </div>
 
-          {/* Glowing Heart Icon Centerpiece */}
+          {/* Glowing Heart Icon → Opens Love Meter */}
           <motion.div
             whileHover={{ scale: 1.15 }}
-            onClick={triggerSparkles}
+            onClick={() => setShowLoveMeter(true)}
             className="my-8 sm:my-10 inline-flex flex-col items-center cursor-pointer group"
-            title="Klik untuk menyalakan cinta ✨"
+            title="Klik untuk mengukur cintamu ✨"
           >
             <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-pink-500/15 border border-[#f472b6]/40 flex items-center justify-center shadow-[0_0_25px_rgba(244,114,182,0.4)] group-hover:shadow-[0_0_35px_rgba(244,114,182,0.7)] group-hover:border-pink-300 transition-all duration-300">
               <Heart className="w-8 h-8 sm:w-10 sm:h-10 text-[#f472b6] fill-[#f472b6] animate-pulse drop-shadow-[0_0_12px_rgba(244,114,182,0.8)]" />
               <div className="absolute inset-0 rounded-full bg-[#f472b6]/20 blur-md pointer-events-none" />
             </div>
             <span className="font-sans text-[11px] text-pink-300/70 tracking-wider mt-2 group-hover:text-pink-200 transition-colors">
-              tap the heart ♡
+              sentuh untuk cinta ♡
             </span>
           </motion.div>
 
@@ -148,6 +135,12 @@ export const BirthdayWishesSection: React.FC<BirthdayWishesSectionProps> = ({
           </div>
         </motion.div>
       </div>
+
+      {/* Love Meter Modal */}
+      <LoveMeterModal
+        isOpen={showLoveMeter}
+        onClose={() => setShowLoveMeter(false)}
+      />
     </section>
   );
 };
