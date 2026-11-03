@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Heart, ArrowDown, FastForward } from "lucide-react";
+import { Heart, ArrowDown } from "lucide-react";
 import confetti from "canvas-confetti";
 
 export interface LoveLetterModalProps {
@@ -72,10 +72,6 @@ export const LoveLetterModal: React.FC<LoveLetterModalProps> = ({
   }, [isOpen, charIndex, fullMessage]);
 
   const isFinished = charIndex >= fullMessage.length;
-
-  const handleSkipTyping = () => {
-    setCharIndex(fullMessage.length);
-  };
 
   const triggerCelebration = () => {
     try {
@@ -150,18 +146,17 @@ export const LoveLetterModal: React.FC<LoveLetterModalProps> = ({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.94, y: 15 }}
             transition={{ type: "spring", damping: 26, stiffness: 260 }}
-            className={`relative w-full max-w-2xl my-auto flex flex-col items-center ${className}`}
+            className={`relative w-full max-w-xl my-auto flex flex-col items-center ${className}`}
             role="dialog"
             aria-modal="true"
             aria-labelledby="letter-heading"
           >
-
             {/* Glowing Italic Serif Title: Happy Birthday */}
             <motion.div
               initial={{ opacity: 0, y: -15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-center mb-4 sm:mb-6"
+              className="text-center mb-3 sm:mb-5"
             >
               <h2
                 id="letter-heading"
@@ -175,27 +170,23 @@ export const LoveLetterModal: React.FC<LoveLetterModalProps> = ({
             {/* Clean Frosted Dark-Glass Card Container                      */}
             {/* ============================================================ */}
             <div
-              onClick={!isFinished ? handleSkipTyping : undefined}
-              className={`relative w-full rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 bg-[#160a22]/80 backdrop-blur-2xl border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.18)] text-left overflow-hidden transition-all duration-300 ${
-                !isFinished ? "cursor-pointer" : ""
-              }`}
+              className="relative w-full rounded-2xl sm:rounded-3xl p-5 sm:p-8 bg-[#160a22]/85 backdrop-blur-2xl border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.18)] text-left overflow-hidden transition-all duration-300 pb-6 sm:pb-8"
             >
               {/* Subtle top edge highlight */}
               <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-pink-200/50 to-transparent pointer-events-none" />
 
               {/* Header inside card */}
-              <div className="mb-4 sm:mb-6 flex items-center justify-between border-b border-white/10 pb-3">
+              <div className="mb-3.5 sm:mb-5 flex items-center justify-between border-b border-white/10 pb-3">
                 <p className="font-sans font-bold text-xs sm:text-sm md:text-base text-pink-100 tracking-wider flex items-center gap-2 drop-shadow-sm">
                   <span>HAPPY BIRTHDAY, MY EX</span>
                   <span>🤍</span>
                 </p>
-
               </div>
 
               {/* Typewritten Paragraphs with scrollable viewport */}
               <div
                 ref={scrollContainerRef}
-                className="space-y-3.5 sm:space-y-4 font-serif text-xs sm:text-sm md:text-base leading-relaxed text-[#fce7f3]/95 max-h-[50vh] sm:max-h-[54vh] overflow-y-auto pr-2 custom-scrollbar scroll-smooth"
+                className="space-y-3.5 sm:space-y-4 font-serif text-xs sm:text-sm md:text-base leading-relaxed text-[#fce7f3]/95 max-h-[44vh] sm:max-h-[48vh] overflow-y-auto pr-2 custom-scrollbar scroll-smooth"
               >
                 {displayedParagraphs.map((para, idx) => {
                   const isCurrentPara = idx === displayedParagraphs.length - 1;
@@ -220,32 +211,34 @@ export const LoveLetterModal: React.FC<LoveLetterModalProps> = ({
                 })}
               </div>
 
-              {/* Bottom Actions: ONLY APPEARS WHEN TYPING IS FULLY FINISHED */}
-              <AnimatePresence>
-                {isFinished && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 15, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                    className="mt-6 pt-5 border-t border-pink-300/15 flex flex-col sm:flex-row items-center justify-between gap-4"
-                  >
-                    {/* Heart sprinkle interactive trigger */}
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        triggerCelebration();
-                      }}
-                      className="group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-500/10 border border-pink-300/30 hover:border-pink-300 hover:bg-pink-500/20 transition-all text-xs text-pink-200 font-sans"
-                      title="taburan cinta cinta ✨"
-                    >
-                      <Heart className="w-3.5 h-3.5 text-[#f472b6] fill-[#f472b6] group-hover:scale-125 transition-transform" />
-                      <span className="tracking-wide">Sentuh untuk cinta ✨</span>
-                    </button>
+              {/* ============================================================ */}
+              {/* Bottom Actions Area: Optimized for Mobile UI                 */}
+              {/* ============================================================ */}
+              <div className="mt-4 sm:mt-5 pt-3.5 border-t border-white/10 flex flex-col items-center gap-3 w-full">
+                {/* 1. BUTTON "Sentuh untuk cinta ✨" -> SELALU MUNCUL DARI AWAL */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    triggerCelebration();
+                  }}
+                  className="group inline-flex items-center justify-center gap-2 px-5 py-1.5 rounded-full bg-pink-500/10 border border-pink-300/35 hover:border-pink-300 hover:bg-pink-500/20 active:scale-95 transition-all text-xs text-pink-200 font-sans shadow-sm"
+                  title="Sentuh untuk taburan cinta ✨"
+                >
+                  <Heart className="w-3.5 h-3.5 text-[#f472b6] fill-[#f472b6] group-hover:scale-125 transition-transform" />
+                  <span className="tracking-wide">Sentuh untuk cinta ✨</span>
+                </button>
 
-                    {/* Lanjutkan Kisah button */}
-                    <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+                {/* 2. BUTTON "LANJUTKAN KISAH ↓" -> MUNCUL PAS TEKS BERES DENGAN TATA LETAK RAPI DI MOBILE */}
+                <AnimatePresence>
+                  {isFinished && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8 }}
+                      transition={{ duration: 0.45, ease: "easeOut" }}
+                      className="w-full flex justify-center pt-0.5"
+                    >
                       <button
                         type="button"
                         onClick={(e) => {
@@ -255,15 +248,15 @@ export const LoveLetterModal: React.FC<LoveLetterModalProps> = ({
                             onContinueToJourney();
                           }
                         }}
-                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-600 text-white font-sans font-semibold text-xs tracking-wider uppercase shadow-[0_0_20px_rgba(244,114,182,0.4)] hover:shadow-[0_0_30px_rgba(244,114,182,0.7)] hover:scale-105 active:scale-95 transition-all"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 sm:px-10 py-3 rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-600 text-white font-sans font-bold text-xs sm:text-sm tracking-[0.18em] uppercase shadow-[0_0_25px_rgba(244,114,182,0.55)] hover:shadow-[0_0_35px_rgba(244,114,182,0.8)] active:scale-[0.98] transition-all"
                       >
-                        <span>Lanjutkan Kisah</span>
-                        <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
+                        <span>LANJUTKAN KISAH</span>
+                        <ArrowDown className="w-4 h-4 animate-bounce" />
                       </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
           </motion.div>
         </div>
