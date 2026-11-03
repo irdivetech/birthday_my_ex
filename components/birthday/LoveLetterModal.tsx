@@ -1,10 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Sparkles, Heart, ArrowDown, ChevronLeft } from "lucide-react";
+import { X, Heart, ArrowDown, FastForward } from "lucide-react";
 import confetti from "canvas-confetti";
-import { birthdayData } from "@/data/birthday";
 
 export interface LoveLetterModalProps {
   isOpen: boolean;
@@ -19,6 +18,65 @@ export const LoveLetterModal: React.FC<LoveLetterModalProps> = ({
   onContinueToJourney,
   className = "",
 }) => {
+  const fullParagraphs = useMemo(
+    () => [
+      "Selamat ulang tahun, Anggifa Zahratusita! ❤️",
+      "Mungkin hari ini adalah hari spesial banget bagi kamu, karena tepatnya 21 November 2026, kamu menginjak usia 18 tahun yaa? Atau 19 tahun? Lupa akuu, hehe... Pokoknya segitulah.",
+      "Intinya, aku ikut seneng dan ikut bahagia di hari ini karena salah satu wanita yang spesial bagi aku udah nambah dewasa. Besar harapan aku, di tahun di mana kamu bertambah usia ini, kamu bisa jadi pribadi yang lebih baik, bisa lebih kuat, dan bahagia terus.",
+      "Aku juga doain semoga semua hal yang kamu pengenin bisa tercapai di tahun ini. Semua impian, semua cita-cita yang pernah kamu ceritain ke aku dulu, semoga kelihatan arah atau hilalnya di tahun ini. Aku juga berdoa semoga kamu terus dikelilingi sama orang-orang baik dan lingkungan yang sehat.",
+      "Ohh iyaa, maaf ya aku nggak bisa ngasih apa-apa selain ucapan ini. Hari ini aku lagi di Bekasi ikut pelatihan dan beresnya itu tanggal 5 Desember. Aku minta doanya aja, semoga aku baik-baik aja di sini. Insyaallah kalau aku udah pulang nanti, aku temuin kamu.",
+      "Jujur, sebenernya aku maluu tau bikin ucapan kayak gini 🥺. Kita kan sekarang nggak ada hubungan apa-apa, apalagi sekarang udah nggak chattingan sama sekali, kan? Yaa, tapi nggak apa-apa. Aku lawan gengsiku, aku lawan egoku buat ngasihin ini ke kamu.",
+      "Jujur, kalau masih ditanya sayang, yaa sayang. Orang kamu first experience aku selama di Cianjur. Bawaannya kalau ke Cianjur tuh inget kamu, hehe...",
+      "Tapi abaikan semua itu. Sekarang rayakan dulu hari spesial ini dengan orang-orang tersayang kamu, bisa keluarga, teman, dan lain-lain. Yang intinya, aku pengen kamu hari ini lupain semua masalah dan anggap kamu udah berada di titik di mana semua yang kamu harapin, yang kamu inginkan, dan yang kamu pengenin sudah tercapai.",
+      "Aku pengen kamu bahagia yaa, Anggi. Aku sayang kamuu....",
+      "Sekali lagi, Happy Birthday to You!",
+      "I love you more than words can ever say. ❤️",
+    ],
+    []
+  );
+
+  const fullMessage = useMemo(() => fullParagraphs.join("\n\n"), [fullParagraphs]);
+  const [charIndex, setCharIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll as text types
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+    }
+  }, [charIndex]);
+
+  // Typewriter effect logic
+  useEffect(() => {
+    if (!isOpen) {
+      setCharIndex(0);
+      return;
+    }
+
+    if (charIndex >= fullMessage.length) return;
+
+    const currentChar = fullMessage[charIndex];
+    // Natural cadence pause on punctuation
+    const delay =
+      currentChar === "." || currentChar === "!" || currentChar === "?"
+        ? 160
+        : currentChar === ","
+        ? 80
+        : 18;
+
+    const timer = setTimeout(() => {
+      setCharIndex((prev) => prev + 1);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [isOpen, charIndex, fullMessage]);
+
+  const isFinished = charIndex >= fullMessage.length;
+
+  const handleSkipTyping = () => {
+    setCharIndex(fullMessage.length);
+  };
+
   const triggerCelebration = () => {
     try {
       const colors = ["#f472b6", "#ec4899", "#fb7185", "#fce7f3", "#d7a85c"];
@@ -28,164 +86,184 @@ export const LoveLetterModal: React.FC<LoveLetterModalProps> = ({
         origin: { y: 0.6 },
         colors,
       });
-    } catch {
-      // Audio/canvas fallback
-    }
+    } catch {}
   };
+
+  // Split displayed text back into paragraphs
+  const displayedText = fullMessage.slice(0, charIndex);
+  const displayedParagraphs = displayedText.split("\n\n");
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto overflow-x-hidden">
-          {/* Backdrop with Deep Plum Blur */}
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto overflow-x-hidden select-none">
+          {/* Backdrop with Deep Plum / Starry Night Blur */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
             onClick={onClose}
-            className="fixed inset-0 bg-[#0a040e]/85 backdrop-blur-xl -z-10"
+            className="fixed inset-0 bg-[#08020c]/90 backdrop-blur-2xl -z-10"
             aria-hidden="true"
           />
 
-          {/* Centered Ambient Pink Radial Aura Behind Modal */}
+          {/* Ambient Glowing Aura */}
           <div
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[600px] h-[340px] sm:h-[600px] rounded-full bg-[#f472b6]/20 blur-[150px] pointer-events-none -z-10"
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[620px] h-[340px] sm:h-[620px] rounded-full bg-[#f472b6]/20 blur-[150px] pointer-events-none -z-10"
             aria-hidden="true"
           />
+          <div
+            className="fixed top-1/3 left-1/3 w-[260px] sm:w-[450px] h-[260px] sm:h-[450px] rounded-full bg-[#9333ea]/15 blur-[130px] pointer-events-none -z-10"
+            aria-hidden="true"
+          />
+
+          {/* Floating Stardust Particles */}
+          <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden" aria-hidden="true">
+            {[
+              { top: "15%", left: "12%", size: 2, delay: "0.2s" },
+              { top: "22%", left: "85%", size: 3, delay: "1.2s" },
+              { top: "65%", left: "10%", size: 2.5, delay: "2.1s" },
+              { top: "78%", left: "88%", size: 2, delay: "0.7s" },
+              { top: "42%", left: "4%", size: 1.5, delay: "1.8s" },
+              { top: "88%", left: "32%", size: 2.5, delay: "1.4s" },
+              { top: "18%", left: "62%", size: 2, delay: "2.5s" },
+            ].map((star, i) => (
+              <span
+                key={i}
+                className="absolute rounded-full bg-[#fce7f3] star-twinkle"
+                style={{
+                  top: star.top,
+                  left: star.left,
+                  width: `${star.size}px`,
+                  height: `${star.size}px`,
+                  animationDelay: star.delay,
+                  boxShadow: "0 0 12px rgba(244, 114, 182, 0.8)",
+                }}
+              />
+            ))}
+          </div>
 
           {/* Modal Container */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 30 }}
+            initial={{ opacity: 0, scale: 0.94, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 280 }}
-            className={`relative w-full max-w-2xl my-8 flex flex-col items-center ${className}`}
+            exit={{ opacity: 0, scale: 0.94, y: 15 }}
+            transition={{ type: "spring", damping: 26, stiffness: 260 }}
+            className={`relative w-full max-w-2xl my-auto flex flex-col items-center ${className}`}
             role="dialog"
             aria-modal="true"
             aria-labelledby="letter-heading"
           >
-            {/* Top Heading: Happy Birthday */}
-            <div className="text-center mb-6">
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="inline-flex items-center gap-2 text-pink-300 text-xs tracking-[0.3em] uppercase font-sans font-semibold mb-2"
-              >
-                <Sparkles className="w-3.5 h-3.5 text-[#f472b6]" />
-                <span>SPECIAL BIRTHDAY MESSAGE</span>
-                <Sparkles className="w-3.5 h-3.5 text-[#f472b6]" />
-              </motion.div>
 
-              <motion.h2
+            {/* Glowing Italic Serif Title: Happy Birthday */}
+            <motion.div
+              initial={{ opacity: 0, y: -15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="text-center mb-4 sm:mb-6"
+            >
+              <h2
                 id="letter-heading"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-[#fce7f3] drop-shadow-[0_4px_24px_rgba(244,114,182,0.4)]"
+                className="font-serif italic text-4xl sm:text-6xl md:text-7xl font-normal tracking-wide text-[#fff1f2] drop-shadow-[0_0_28px_rgba(244,114,182,0.85)] leading-tight"
               >
                 Happy Birthday
-              </motion.h2>
-            </div>
+              </h2>
+            </motion.div>
 
-            {/* Close Button Top Right */}
-            <button
-              onClick={onClose}
-              className="absolute -top-3 right-0 sm:right-2 w-10 h-10 rounded-full bg-white/[0.06] border border-pink-300/30 text-pink-200 hover:text-white hover:border-[#f472b6] hover:bg-white/[0.12] transition-colors flex items-center justify-center backdrop-blur-md shadow-lg focus:outline-none focus:ring-2 focus:ring-[#f472b6]"
-              aria-label="Tutup surat cinta"
+            {/* ============================================================ */}
+            {/* Clean Frosted Dark-Glass Card Container                      */}
+            {/* ============================================================ */}
+            <div
+              onClick={!isFinished ? handleSkipTyping : undefined}
+              className={`relative w-full rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 bg-[#160a22]/80 backdrop-blur-2xl border border-white/15 shadow-[0_25px_60px_rgba(0,0,0,0.85),inset_0_1px_1px_rgba(255,255,255,0.18)] text-left overflow-hidden transition-all duration-300 ${
+                !isFinished ? "cursor-pointer" : ""
+              }`}
             >
-              <X className="w-5 h-5" />
-            </button>
+              {/* Subtle top edge highlight */}
+              <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-pink-200/50 to-transparent pointer-events-none" />
 
-            {/* ============================================================ */}
-            {/* Main Content Box: Dark Glassmorphism Card                   */}
-            {/* ============================================================ */}
-            <div className="relative w-full rounded-3xl p-6 sm:p-10 md:p-12 bg-[#1b0c23]/85 backdrop-blur-2xl border border-pink-300/30 shadow-[0_25px_60px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.18)] text-left overflow-hidden">
-              {/* Subtle top light highlight inside glass */}
-              <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-pink-200/40 to-transparent" />
-
-              {/* Heart watermark in the corner */}
-              <Heart className="absolute -bottom-10 -right-10 w-44 h-44 text-[#f472b6]/5 fill-[#f472b6]/5 pointer-events-none -rotate-12" />
-
-              {/* First Line: HAPPY BIRTHDAY SAYANGKUUU 💕 */}
-              <div className="mb-6 pb-4 border-b border-pink-300/15">
-                <p className="font-display font-bold text-xl sm:text-2xl md:text-3xl text-pink-200 tracking-wide drop-shadow-[0_2px_10px_rgba(244,114,182,0.3)]">
-                  HAPPY BIRTHDAY SAYANGKUUU 💕
+              {/* Header inside card */}
+              <div className="mb-4 sm:mb-6 flex items-center justify-between border-b border-white/10 pb-3">
+                <p className="font-sans font-bold text-xs sm:text-sm md:text-base text-pink-100 tracking-wider flex items-center gap-2 drop-shadow-sm">
+                  <span>HAPPY BIRTHDAY, MY EX</span>
+                  <span>🤍</span>
                 </p>
-                <span className="font-serif italic text-xs sm:text-sm text-pink-300/70 mt-1 block">
-                  Untuk {birthdayData.recipient.name}, seseorang yang selalu paling berharga di hatiku.
-                </span>
+
               </div>
 
-              {/* Warm, Romantic Paragraphs */}
-              <div className="space-y-4 sm:space-y-5 font-serif text-sm sm:text-base md:text-lg leading-relaxed text-[#fce7f3]/95 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
-                <p>
-                  Selamat ulang tahun ya cintaa! Hari ini hari yang spesial banget karena hari ini adalah hari lahir orang yang paling berarti di hidupku. Dari sekian banyak orang di dunia ini, aku bersyukur luar biasa bisa mengenalmu dan menjadi bagian dari ceritamu.
-                </p>
+              {/* Typewritten Paragraphs with scrollable viewport */}
+              <div
+                ref={scrollContainerRef}
+                className="space-y-3.5 sm:space-y-4 font-serif text-xs sm:text-sm md:text-base leading-relaxed text-[#fce7f3]/95 max-h-[50vh] sm:max-h-[54vh] overflow-y-auto pr-2 custom-scrollbar scroll-smooth"
+              >
+                {displayedParagraphs.map((para, idx) => {
+                  const isCurrentPara = idx === displayedParagraphs.length - 1;
+                  const isBold =
+                    idx === 0 ||
+                    idx === displayedParagraphs.length - 1 ||
+                    idx === displayedParagraphs.length - 2;
 
-                <p>
-                  Terima kasih ya sudah selalu ada dengan senyuman manismu yang selalu berhasil menenangkan hariku yang berat. Setiap tawa yang kita bagi bersama, setiap percakapan panjang hingga larut malam, dan setiap tatapan hangatmu adalah anugerah yang selalu aku syukuri setiap hari.
-                </p>
-
-                <p>
-                  Kamu punya hati yang begitu lembut, kebaikan yang tulus, dan cara pandang yang indah. Bersamamu membuat duniaku terasa jauh lebih hangat dan bermakna. Tidak ada yang lebih membahagiakan selain melihatmu tersenyum bahagia.
-                </p>
-
-                <p>
-                  Di usiamu yang baru ini, aku berdoa semoga semua impian indah dan harapan terbaikmu pelan-pelan terwujud satu per satu. Semoga kamu selalu dikelilingi kebahagiaan, kesehatan yang sempurna, rezeki yang melimpah, dan cinta yang tak pernah habis. Apapun jalan di depan, ketahuilah bahwa aku akan selalu ada di sampingmu untuk mendukungmu dan menggenggam tanganmu erat-erat.
-                </p>
-
-                <p className="font-serif italic text-pink-200 pt-2">
-                  Selamat hari ulang tahun, kesayanganku. I love you more than words can ever say. 🤍
-                </p>
+                  return (
+                    <p
+                      key={idx}
+                      className={`relative ${
+                        isBold ? "font-semibold text-pink-100" : ""
+                      }`}
+                    >
+                      {para}
+                      {isCurrentPara && !isFinished && (
+                        <span className="inline-block w-[2px] h-3.5 sm:h-4 bg-pink-200 ml-1.5 animate-[pulse_0.75s_infinite] align-middle shadow-[0_0_8px_rgba(244,114,182,1)]" />
+                      )}
+                    </p>
+                  );
+                })}
               </div>
 
-              {/* Signature & Wax Seal */}
-              <div className="mt-8 pt-6 border-t border-pink-300/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div>
-                  <p className="font-script text-2xl sm:text-3xl text-pink-300">
-                    With all my love, always
-                  </p>
-                  <p className="font-serif text-xs text-pink-200/60 mt-0.5">
-                    {birthdayData.recipient.nickname ? `Untuk ${birthdayData.recipient.nickname}` : "Selamanya untukmu"} ♡
-                  </p>
-                </div>
+              {/* Bottom Actions: ONLY APPEARS WHEN TYPING IS FULLY FINISHED */}
+              <AnimatePresence>
+                {isFinished && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    className="mt-6 pt-5 border-t border-pink-300/15 flex flex-col sm:flex-row items-center justify-between gap-4"
+                  >
+                    {/* Heart sprinkle interactive trigger */}
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        triggerCelebration();
+                      }}
+                      className="group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-pink-500/10 border border-pink-300/30 hover:border-pink-300 hover:bg-pink-500/20 transition-all text-xs text-pink-200 font-sans"
+                      title="taburan cinta cinta ✨"
+                    >
+                      <Heart className="w-3.5 h-3.5 text-[#f472b6] fill-[#f472b6] group-hover:scale-125 transition-transform" />
+                      <span className="tracking-wide">Sentuh untuk cinta ✨</span>
+                    </button>
 
-                {/* Wax seal decoration */}
-                <div
-                  onClick={triggerCelebration}
-                  className="cursor-pointer group flex items-center gap-2 px-3 py-1.5 rounded-full bg-pink-500/10 border border-pink-300/30 hover:border-pink-300 hover:bg-pink-500/20 transition-all text-xs text-pink-200 font-sans"
-                  title="Sentuh untuk taburan cinta ✨"
-                >
-                  <Heart className="w-3.5 h-3.5 text-[#f472b6] fill-[#f472b6] group-hover:scale-125 transition-transform" />
-                  <span className="tracking-wider">Sentuh untuk cinta ✨</span>
-                </div>
-              </div>
-
-              {/* Action Buttons: Continue to Journey */}
-              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-                <button
-                  onClick={() => {
-                    onClose();
-                    if (onContinueToJourney) {
-                      onContinueToJourney();
-                    }
-                  }}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-600 text-white font-sans font-semibold text-xs sm:text-sm tracking-[0.15em] uppercase shadow-[0_0_20px_rgba(244,114,182,0.4)] hover:shadow-[0_0_30px_rgba(244,114,182,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all"
-                >
-                  <span>Lanjutkan Kisah Kita</span>
-                  <ArrowDown className="w-4 h-4 animate-bounce" />
-                </button>
-
-                <button
-                  onClick={onClose}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-pink-300/30 text-pink-200 hover:text-white hover:border-pink-300 bg-white/[0.04] font-sans text-xs sm:text-sm tracking-[0.15em] uppercase transition-all"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                  <span>Kembali</span>
-                </button>
-              </div>
+                    {/* Lanjutkan Kisah button */}
+                    <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onClose();
+                          if (onContinueToJourney) {
+                            onContinueToJourney();
+                          }
+                        }}
+                        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-pink-600 via-rose-500 to-pink-600 text-white font-sans font-semibold text-xs tracking-wider uppercase shadow-[0_0_20px_rgba(244,114,182,0.4)] hover:shadow-[0_0_30px_rgba(244,114,182,0.7)] hover:scale-105 active:scale-95 transition-all"
+                      >
+                        <span>Lanjutkan Kisah</span>
+                        <ArrowDown className="w-3.5 h-3.5 animate-bounce" />
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         </div>
@@ -195,4 +273,3 @@ export const LoveLetterModal: React.FC<LoveLetterModalProps> = ({
 };
 
 export default LoveLetterModal;
-

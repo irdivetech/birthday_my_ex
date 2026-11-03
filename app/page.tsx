@@ -201,7 +201,10 @@ export default function BirthdayPage() {
               transition={{ duration: 0.45, ease: "easeInOut" }}
               className="w-full flex-1 flex flex-col justify-center items-center"
             >
-              <VideoMessageSection onNext={handleVideoToWishes} />
+              <VideoMessageSection
+                youtubeId="0fcsGS1dEro"
+                onNext={handleVideoToWishes}
+              />
             </motion.div>
           )}
 

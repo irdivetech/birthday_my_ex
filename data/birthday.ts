@@ -100,10 +100,10 @@ export interface BirthdayData {
 
 export const birthdayData: BirthdayData = {
   recipient: {
-    name: "Aura",
-    nickname: "Sayang",
-    birthDate: "22 September",
-    zodiac: "Virgo",
+    name: "Anggifa Zahratusita",
+    nickname: "Anggi",
+    birthDate: "21 November",
+    zodiac: "Scorpio",
   },
 
   opening: {

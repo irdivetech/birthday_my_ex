@@ -49,9 +49,9 @@ export const SpecialDaySection: React.FC<SpecialDaySectionProps> = ({
   const polaroids: PolaroidItem[] = [
     {
       id: "pol-1",
-      image: "/images/2.jpeg",
-      caption: "Momen Manis Kita ♡",
-      date: "Sweetest Memories",
+      image: "/images/16.jpeg",
+      caption: "cantik nya pacar aku ♡",
+      date: "MBG",
       rotation: "-rotate-6 md:-rotate-12",
       side: "left",
       fallbackGradient: "from-rose-900/60 via-purple-900/50 to-pink-900/40",
@@ -68,7 +68,7 @@ export const SpecialDaySection: React.FC<SpecialDaySectionProps> = ({
     {
       id: "pol-3",
       image: "/images/5.jpeg",
-      caption: "Tawa Bersamamu 🤍",
+      caption: "last school 🤍",
       date: "Happy Days",
       rotation: "rotate-6 md:rotate-12",
       side: "right",
