@@ -270,9 +270,9 @@ export const birthdayData: BirthdayData = {
   },
 
   audio: {
-    src: "/audio/birthday.mp3",
-    title: "Romantic Midnight Serenade",
-    artist: "Piano in C Major",
+    src: "/audio/panjang_umur.mp3",
+    title: "Panjang Umur",
+    artist: "Special Birthday Song",
     enableSynthesizerFallback: true,
   },
 };

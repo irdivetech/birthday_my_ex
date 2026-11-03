@@ -36,6 +36,8 @@ class RomanticAudioEngine {
         this.audioEl = new Audio(mp3Src);
         this.audioEl.loop = true;
         this.audioEl.volume = 0.45;
+      } else if (!this.audioEl.src.endsWith(mp3Src)) {
+        this.audioEl.src = mp3Src;
       }
 
       try {
