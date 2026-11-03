@@ -1,11 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Sparkles, Heart, Volume2, VolumeX } from "lucide-react";
-import { romanticAudio } from "@/utils/romanticAudio";
-import { birthdayData } from "@/data/birthday";
+import { Sparkles, Heart } from "lucide-react";
 
 export interface SpecialDaySectionProps {
   onReadLetter?: () => void;
@@ -26,24 +24,7 @@ export const SpecialDaySection: React.FC<SpecialDaySectionProps> = ({
   onReadLetter,
   className = "",
 }) => {
-  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [imgErrorMap, setImgErrorMap] = useState<Record<string, boolean>>({});
-
-  // Sync music state with romanticAudio engine
-  useEffect(() => {
-    setIsPlayingMusic(romanticAudio.getPlaying());
-
-    const interval = setInterval(() => {
-      setIsPlayingMusic(romanticAudio.getPlaying());
-    }, 800);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleToggleMusic = () => {
-    const nextState = romanticAudio.toggle(birthdayData.audio.src);
-    setIsPlayingMusic(nextState);
-  };
 
   // 4 scattered Polaroid items on left and right sides
   const polaroids: PolaroidItem[] = [
@@ -324,39 +305,6 @@ export const SpecialDaySection: React.FC<SpecialDaySectionProps> = ({
           </button>
         </motion.div>
       </div>
-
-      {/* ============================================================ */}
-      {/* Bottom Right: Music Player Status Indicator ("🎵 playing")   */}
-      {/* ============================================================ */}
-      <motion.aside
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1, delay: 0.8, ease: "easeOut" }}
-        className="fixed bottom-6 right-6 z-40"
-        aria-label="Indikator pemutar musik"
-      >
-        <button
-          onClick={handleToggleMusic}
-          className="group flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#1e0d29]/80 backdrop-blur-xl border border-[#f472b6]/35 shadow-[0_8px_25px_rgba(0,0,0,0.5),0_0_15px_rgba(244,114,182,0.25)] hover:border-[#f472b6]/70 hover:shadow-[0_0_25px_rgba(244,114,182,0.4)] transition-all duration-300 text-xs font-sans text-pink-200"
-          title={isPlayingMusic ? "Jeda musik latar" : "Putar musik latar"}
-        >
-          {/* Animated sound wave bars when playing */}
-          {isPlayingMusic ? (
-            <div className="flex items-end gap-0.5 h-3.5 w-3.5">
-              <span className="w-0.5 bg-[#f472b6] rounded-full animate-[pulse_0.6s_ease-in-out_infinite] h-3" />
-              <span className="w-0.5 bg-pink-300 rounded-full animate-[pulse_0.9s_ease-in-out_infinite] h-2" />
-              <span className="w-0.5 bg-[#f472b6] rounded-full animate-[pulse_0.75s_ease-in-out_infinite] h-3.5" />
-            </div>
-          ) : (
-            <VolumeX className="w-3.5 h-3.5 text-pink-300/60" />
-          )}
-
-          {/* Music status label */}
-          <span className="tracking-wide font-medium">
-            {isPlayingMusic ? "🎵 playing" : "🎵 paused"}
-          </span>
-        </button>
-      </motion.aside>
     </section>
   );
 };

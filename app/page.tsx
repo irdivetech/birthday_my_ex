@@ -13,13 +13,14 @@ import { OurMemoriesSection } from "@/components/birthday/OurMemoriesSection";
 import { VideoMessageSection } from "@/components/birthday/VideoMessageSection";
 import { BirthdayWishesSection } from "@/components/birthday/BirthdayWishesSection";
 import { AlwaysForeverSection } from "@/components/birthday/AlwaysForeverSection";
+import { romanticAudio } from "@/utils/romanticAudio";
 
 export type StepType = 1 | 2 | "2b" | 3 | 4 | 5 | 6 | 7;
 
 export default function BirthdayPage() {
   const [currentStep, setCurrentStep] = useState<StepType>(1);
   const [showLetterModal, setShowLetterModal] = useState(false);
-  const [triggerAudio, setTriggerAudio] = useState(false);
+  const [triggerAudio, setTriggerAudio] = useState(true);
   const countdownAudioRef = useRef<HTMLAudioElement | null>(null);
 
   // Transition Step 1 -> Step 2 (Gift Box)
@@ -30,6 +31,8 @@ export default function BirthdayPage() {
   // Transition Step 2 -> Step 3 (Special Day)
   const handleGiftBoxOpen = () => {
     try {
+      // Pause background music so 1103.MP3 countdown sound effect is crystal clear
+      romanticAudio.stop();
       if (!countdownAudioRef.current) {
         countdownAudioRef.current = new Audio("/audio/1103.MP3");
       }
@@ -45,6 +48,9 @@ export default function BirthdayPage() {
 
   // Transition Step 3 -> Step 4 modal (Love Letter)
   const handleMatrixComplete = () => {
+    try {
+      romanticAudio.start("/audio/panjang_umur.mp3");
+    } catch {}
     setTriggerAudio(true);
     setCurrentStep(3);
   };
@@ -85,7 +91,7 @@ export default function BirthdayPage() {
       {/* Universal performant falling petals */}
       <FallingPetals density="medium" />
 
-      {/* Floating Music Toggle (Bottom Right or triggered with audio) */}
+      {/* Floating Music Toggle (Bottom Left Pill & Bottom Right Speaker) */}
       <MusicToggle autoStartTrigger={triggerAudio} />
 
       {/* Matrix Countdown fullscreen overlay */}
