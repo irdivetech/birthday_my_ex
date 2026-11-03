@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FallingPetals } from "@/components/birthday/FallingPetals";
 import { MusicToggle } from "@/components/birthday/MusicToggle";
 import { CountdownSection } from "@/components/birthday/CountdownSection";
 import { GiftBoxSection } from "@/components/birthday/GiftBoxSection";
+import { MatrixCountdown } from "@/components/birthday/MatrixCountdown";
 import { SpecialDaySection } from "@/components/birthday/SpecialDaySection";
 import { LoveLetterModal } from "@/components/birthday/LoveLetterModal";
 import { OurMemoriesSection } from "@/components/birthday/OurMemoriesSection";
@@ -13,12 +14,13 @@ import { VideoMessageSection } from "@/components/birthday/VideoMessageSection";
 import { BirthdayWishesSection } from "@/components/birthday/BirthdayWishesSection";
 import { AlwaysForeverSection } from "@/components/birthday/AlwaysForeverSection";
 
-export type StepType = 1 | 2 | 3 | 4 | 5 | 6 | 7;
+export type StepType = 1 | 2 | "2b" | 3 | 4 | 5 | 6 | 7;
 
 export default function BirthdayPage() {
   const [currentStep, setCurrentStep] = useState<StepType>(1);
   const [showLetterModal, setShowLetterModal] = useState(false);
   const [triggerAudio, setTriggerAudio] = useState(false);
+  const countdownAudioRef = useRef<HTMLAudioElement | null>(null);
 
   // Transition Step 1 -> Step 2 (Gift Box)
   const handleCountdownOpen = () => {
@@ -27,11 +29,27 @@ export default function BirthdayPage() {
 
   // Transition Step 2 -> Step 3 (Special Day)
   const handleGiftBoxOpen = () => {
+
+    try {
+      if (!countdownAudioRef.current) {
+        countdownAudioRef.current = new Audio("/audio/1103.MP3");
+      }
+      countdownAudioRef.current.currentTime = 0;
+      countdownAudioRef.current.volume = 1.0;
+      countdownAudioRef.current.play().catch(() => {});
+    } catch {}
+
+    setTimeout(() => {
+      setCurrentStep("2b");
+    }, 250);
+  };
+
+  // Transition Step 3 -> Step 4 modal (Love Letter)
+  const handleMatrixComplete = () => {
     setTriggerAudio(true);
     setCurrentStep(3);
   };
 
-  // Transition Step 3 -> Step 4 modal (Love Letter)
   const handleReadLetter = () => {
     setShowLetterModal(true);
   };
@@ -81,8 +99,18 @@ export default function BirthdayPage() {
       {/* Floating Music Toggle (Bottom Right or triggered with audio) */}
       <MusicToggle autoStartTrigger={triggerAudio} />
 
+      {/* Matrix Countdown fullscreen overlay */}
+      {currentStep === "2b" && (
+        <MatrixCountdown
+          onComplete={handleMatrixComplete}
+          audioSrc="/audio/1103.MP3"
+          audioElement={countdownAudioRef.current}
+        />
+      )}
+
       {/* Quick Step Switcher Bar (Responsive Pill Navigation) */}
-      <nav
+      {currentStep !== "2b" && (
+        <nav
         aria-label="Navigasi 7 Halaman Ulang Tahun"
         className="fixed top-4 sm:top-5 left-1/2 -translate-x-1/2 z-40 max-w-[94vw] overflow-x-auto p-1 sm:p-1.5 rounded-full bg-[#1b0a24]/85 backdrop-blur-xl border border-pink-300/30 shadow-2xl flex items-center gap-1 scrollbar-none"
       >
@@ -99,7 +127,8 @@ export default function BirthdayPage() {
             {item.label}
           </button>
         ))}
-      </nav>
+        </nav>
+      )}
 
       {/* ============================================================ */}
       {/* 7 Interactive Sequential Views (Single-Screen / No Scroll)   */}

@@ -23,11 +23,9 @@ export const GiftBoxSection: React.FC<GiftBoxSectionProps> = ({
     if (isOpening || isOpened) return;
     setIsOpening(true);
 
-    // Start background music automatically on user interaction
-    try {
-      romanticAudio.start(birthdayData.audio.src);
-    } catch {
-      // Audio fallback
+    // Trigger onOpen immediately so sound starts exactly when the gift box explodes
+    if (onOpen) {
+      onOpen();
     }
 
     // Confetti celebratory burst
@@ -65,10 +63,7 @@ export const GiftBoxSection: React.FC<GiftBoxSectionProps> = ({
 
     setTimeout(() => {
       setIsOpened(true);
-      if (onOpen) {
-        onOpen();
-      }
-    }, 700);
+    }, 250);
   };
 
   return (
