@@ -29,7 +29,6 @@ export default function BirthdayPage() {
 
   // Transition Step 2 -> Step 3 (Special Day)
   const handleGiftBoxOpen = () => {
-
     try {
       if (!countdownAudioRef.current) {
         countdownAudioRef.current = new Audio("/audio/1103.MP3");
@@ -81,16 +80,6 @@ export default function BirthdayPage() {
     setShowLetterModal(false);
   };
 
-  const stepsList: { step: StepType; label: string }[] = [
-    { step: 1, label: "Countdown" },
-    { step: 2, label: "Gift Box" },
-    { step: 3, label: "Special Day" },
-    { step: 4, label: "Memories" },
-    { step: 5, label: "Video" },
-    { step: 6, label: "Wishes" },
-    { step: 7, label: "Forever" },
-  ];
-
   return (
     <main className="relative min-h-screen w-full bg-[#0a040e] text-[#fce7f3] overflow-hidden select-none">
       {/* Universal performant falling petals */}
@@ -106,28 +95,6 @@ export default function BirthdayPage() {
           audioSrc="/audio/1103.MP3"
           audioElement={countdownAudioRef.current}
         />
-      )}
-
-      {/* Quick Step Switcher Bar (Responsive Pill Navigation) */}
-      {currentStep !== "2b" && (
-        <nav
-        aria-label="Navigasi 7 Halaman Ulang Tahun"
-        className="fixed top-4 sm:top-5 left-1/2 -translate-x-1/2 z-40 max-w-[94vw] overflow-x-auto p-1 sm:p-1.5 rounded-full bg-[#1b0a24]/85 backdrop-blur-xl border border-pink-300/30 shadow-2xl flex items-center gap-1 scrollbar-none"
-      >
-        {stepsList.map((item) => (
-          <button
-            key={item.step}
-            onClick={() => setCurrentStep(item.step)}
-            className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-sans tracking-wider uppercase whitespace-nowrap transition-all duration-300 ${
-              currentStep === item.step
-                ? "bg-gradient-to-r from-pink-500 to-[#f472b6] text-white font-bold shadow-[0_0_12px_rgba(244,114,182,0.7)] scale-105"
-                : "text-pink-200/70 hover:text-white hover:bg-white/[0.05]"
-            }`}
-          >
-            {item.label}
-          </button>
-        ))}
-        </nav>
       )}
 
       {/* ============================================================ */}
