@@ -176,7 +176,7 @@ export const AlwaysForeverSection: React.FC<AlwaysForeverSectionProps> = ({
         </motion.div>
 
         {/* Pill-Shaped Action Button: ↺ REPLAY FROM START */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.7, ease: "easeOut" }}
@@ -190,7 +190,7 @@ export const AlwaysForeverSection: React.FC<AlwaysForeverSectionProps> = ({
             <span className="font-bold">↺ REPLAY FROM START</span>
             <Sparkles className="w-4 h-4 text-pink-200 group-hover:scale-125 transition-transform duration-300" />
           </button>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

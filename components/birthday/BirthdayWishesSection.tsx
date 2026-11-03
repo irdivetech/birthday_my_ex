@@ -89,19 +89,19 @@ export const BirthdayWishesSection: React.FC<BirthdayWishesSectionProps> = ({
             Birthday Wishes
           </h2>
 
-          {/* Subtitle: Happy Birthday, my love 🤍 */}
-          <p className="font-serif italic text-xl sm:text-2xl text-pink-300 font-light mb-8">
-            Happy Birthday, my love 🤍
+          {/* Subtitle: Happy Birthday, My Ex. */}
+          <p className="font-serif italic text-xl sm:text-2xl text-pink-300 font-medium mb-8">
+            Happy Birthday, My Ex.
           </p>
 
           {/* Heartfelt Prayer Paragraphs */}
           <div className="space-y-4 sm:space-y-5 font-serif text-sm sm:text-base md:text-lg leading-relaxed text-[#fce7f3]/90 text-center max-w-xl mx-auto">
             <p>
-              &ldquo;I wish you happiness, health, success, and endless blessings. May every step you take be filled with kindness, every dream you pursue find its sweetest way to come true, and every tomorrow be brighter than yesterday.&rdquo;
+              Happy birthday to someone who was once a beautiful part of my life. Today is your day, and I hope it brings you countless reasons to smile. May this new chapter be filled with beautiful surprises, endless opportunities, and everything your heart has been wishing for. No matter where life takes us, I sincerely hope you find happiness in every little thing along the way.
             </p>
 
-            <p className="text-pink-100/80 font-light">
-              Semoga hari-harimu selalu dikelilingi orang-orang yang tulus mencintaimu, hatimu selalu tenang dalam lindungan terbaik, dan senyuman manismu tidak pernah padam. Kamu adalah kado terindah di hidupku, dan aku akan selalu mendoakan yang terbaik untukmu.
+            <p className="text-pink-100/90 font-light">
+              Di hari bertambahnya usiamu ini, aku cuma berharap semesta selalu punya cara baik untuk menjagamu. Semoga langkahmu ke depan selalu dipermudah, hatimu tetap kuat menghadapi segala hal, dan setiap perjalanan yang kamu tempuh membawa kamu lebih dekat dengan impian-impianmu. Jangan lupa menikmati hidup dan memberikan kebahagiaan untuk dirimu sendiri. Karena hari ini, kamu pantas mendapatkan semua hal baik di dunia.
             </p>
           </div>
 
@@ -146,4 +146,3 @@ export const BirthdayWishesSection: React.FC<BirthdayWishesSectionProps> = ({
 };
 
 export default BirthdayWishesSection;
-
